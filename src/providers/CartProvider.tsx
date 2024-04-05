@@ -11,18 +11,32 @@ export const CartContext  = createContext<CartType>({
     addItem:()=>{},
 });
 
+
 const CartProvider = ( {children}:PropsWithChildren) =>{
     const [items, setItems] = useState<CartItem[]>([]);
     const addItem = (product: Product, size: CartItem['size']) =>{
         const newCartItem : CartItem = {
-            id:'1',
+            id: product.name + size,
             product,
             product_id : product.id,
             size,
             quantity:1,
         };
-
-        setItems([newCartItem, ...items]);
+        const itemIndex = items.findIndex(item => item.id === newCartItem.id);
+        if (itemIndex !== -1) {
+          // If the item is found, create a copy of the cartItems array
+          const updatedCartItems = [...items];
+          const newQuantity = updatedCartItems[itemIndex].quantity + 1;
+          // Update the quantity of the item at the found index
+          updatedCartItems[itemIndex] = {
+           ...updatedCartItems[itemIndex],
+           quantity: newQuantity
+          };
+          setItems(updatedCartItems);
+        }
+        else{
+            setItems([newCartItem, ...items]);
+        }
     };
 
     return (
