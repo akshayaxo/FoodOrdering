@@ -1,4 +1,4 @@
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { View, Text, StyleSheet, Image, Pressable, Button  } from 'react-native';
 import products from '@/assets/data/products';
 import { defaultImage } from '@/src/components/ProductListItem';
@@ -7,6 +7,7 @@ import { useCart } from '@/src/providers/CartProvider';
 import { PizzaSize } from '@/src/types';
 
 const sizes: PizzaSize[] = ['S','M','L','XL'];
+const router = useRouter();
 
 const ProductDetailsScreen = () =>{
     const {id} = useLocalSearchParams();
@@ -18,6 +19,7 @@ const ProductDetailsScreen = () =>{
             return;
         }
         addItem(product, seletecSize);
+        router.push('/cart');
     }
     if(!product){
         return <Text>Product not found!!!</Text>
